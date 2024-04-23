@@ -1,7 +1,13 @@
-FROM hello-world
+FROM golang AS adenor
 
 WORKDIR /root
 
-COPY ./main /root/
+COPY ./main.go .
 
-ENTRYPOINT [ "./main" ]
+RUN go build -o altair main.go
+
+FROM hello-world
+
+COPY --from=adenor /root/altair .
+
+ENTRYPOINT [ "./altair" ]
